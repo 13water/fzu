@@ -20,13 +20,14 @@ public class Round {
         JsonElement s1 = json.toJsonTree(user);
         String str = s1.getAsJsonObject().get("token").getAsString();
         String respond = postRequest("https://api.shisanshui.rtxux.xyz/game/open", null, str);
-        System.out.println(respond);
+//        System.out.println(respond);
         s1 = new JsonParser().parse(respond);
         JsonObject s2 = s1.getAsJsonObject();
         String s3 = s2.get("data").getAsJsonObject().get("card").getAsString();
         int num = s2.get("data").getAsJsonObject().get("id").getAsInt();
         System.out.println(s3);
         P.totp = s3;
+        System.out.println(s3);
         P.init(s3, num);
     }
     public static void submit(User user, String s) throws IOException {
@@ -34,11 +35,11 @@ public class Round {
         JsonElement s1 = json.toJsonTree(user);
         String str = s1.getAsJsonObject().get("token").getAsString();
         String respond = postRequest("https://api.shisanshui.rtxux.xyz/game/submit", s, str);
-        System.out.println(respond);
+//        System.out.println(respond);
         s1 = new JsonParser().parse(respond);
         JsonObject s2 = s1.getAsJsonObject();
         String s3 = s2.get("data").toString();
-        System.out.println(s3);
+//        System.out.println(s3);
     }
     public static void main(String args[]) throws IOException {
         Account account = new Account();
@@ -46,10 +47,10 @@ public class Round {
         user.init("zxcad","zxcda");
 //        System.out.println(account.register(user));
         user.init("kuliangce","txt");
-//        System.out.println(json.toJson(user));
-//        user = account.Login(user);
-//        System.out.println(json.toJson(user));
-//        System.out.println();
+        System.out.println(json.toJson(user));
+        user = account.Login(user);
+        System.out.println(json.toJson(user));
+        System.out.println();
 //        for (int i = 0; i < 10; i++){
 //            Open(user, poker);
 //            Hd.init(poker);
@@ -59,14 +60,15 @@ public class Round {
 //            nj.Nomal_Judge(poker, Hd, 1);
 //            ex = ex.init(Hd);
 //            JsonElement jj = json.toJsonTree(ex);
-////            System.out.println(jj.toString());
+//            System.out.println(jj.toString());
 //            submit(user, jj.toString());
 //        }
         Rank_and_History RH = new Rank_and_History();
 //        String[] test = RH.Get_total_Rank();
 //        String test = RH.Get_Detail_History(user, 49926);
         String s = new String();
-        System.out.println(s.length());
+        System.out.println(RH.Get_Personal_History(user, 3));
+//        System.out.println(s.length());
     }
 }
 

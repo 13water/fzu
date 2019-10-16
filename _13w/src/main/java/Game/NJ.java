@@ -234,58 +234,58 @@ public class NJ {
         if (x != 1){
             if (flush(poker)){
                 analyse(ex, x);
-                System.out.println(1);
+//                System.out.println(1);
                 clr(poker);
                 return;
             }
             if (boom(poker)){
                 analyse(ex, x);
-                System.out.println(2);
+//                System.out.println(2);
                 clr(poker);
                 return;
             }
             if (cucurbit(poker)){
                 analyse(ex, x);
-                System.out.println(3);
+//                System.out.println(3);
                 clr(poker);
                 return;
             }
             if (same_suit(poker)){
                 analyse(ex, x);
-                System.out.println(4);
+//                System.out.println(4);
                 clr(poker);
                 return;
             }
             if (straight(poker)){
                 analyse(ex, x);
-                System.out.println(5);
+//                System.out.println(5);
                 clr(poker);
                 return;
             }
         }
         if (three(poker)){
             analyse(ex, x);
-            System.out.println(6);
+//            System.out.println(6);
             clr(poker);
             return;
         }
         if (x != 1){
             if (two_pair(poker)){
                 analyse(ex, x);
-                System.out.println(7);
+//                System.out.println(7);
                 clr(poker);
                 return;
             }
         }
         if (pair(poker)){
             analyse(ex, x);
-            System.out.println(8);
+//            System.out.println(8);
             clr(poker);
             return;
         }
         if (zapai(poker)){
             analyse(ex, x);
-            System.out.println(9);
+//            System.out.println(9);
             clr(poker);
             return;
         }
@@ -305,11 +305,7 @@ public class NJ {
             c = change(num);
             test = test + c;
             ex.pushString(c, x);
-//            System.out.println(test);
         }
-//        for (int i = 0; i < cnt; i++){
-//            System.out.println(t[i]);
-//        }
     }
     static void clr(Poker poker){
         int s, num;

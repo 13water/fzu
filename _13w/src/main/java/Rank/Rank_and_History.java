@@ -63,4 +63,29 @@ public class Rank_and_History {
         System.out.println(ans);
         return ans;
     }
+    public static String Get_Personal_History(User user, int page) throws IOException {
+        String ans = new String();
+        Gson json = new Gson();
+        JsonElement s1 = json.toJsonTree(user);
+        String token = s1.getAsJsonObject().get("token").getAsString();
+        String Url = "https://api.shisanshui.rtxux.xyz/history?" + "player_id=" + String.valueOf(user.getID());
+        Url += "&limit=25&page=" + String.valueOf(page);
+        String respond = getRequest(Url, token);
+        s1 = new JsonParser().parse(respond);
+        JsonArray s = new JsonParser().parse(s1.getAsJsonObject().get("data").toString()).getAsJsonArray();
+        if (s.size() == 0){
+            return null;
+        }
+        for (int i = 0; i < 25 && i < s.size(); i++){
+            JsonElement str = s.get(i);
+            JsonObject text = str.getAsJsonObject();
+            ans += "战局ID: " + text.get("id").toString() + "\n";
+            ans += "得分: " + text.get("score").toString() + "\n";
+            JsonArray card = new JsonParser().parse(text.get("card").toString()).getAsJsonArray();
+            ans += "前墩: " + card.get(0).getAsString() + "\n";
+            ans += "中墩: " + card.get(1).getAsString() + "\n";
+            ans += "后墩: " + card.get(2).getAsString() + "\n\n\n";
+        }
+        return ans;
+    }
 }
