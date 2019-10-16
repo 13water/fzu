@@ -27,6 +27,7 @@ public class Account {
     public static User Login(User user) throws IOException {
         Gson json = new Gson();
         String respond = postRequest(Login, json.toJson(user));
+        System.out.println(respond);
         JsonElement s1 = new JsonParser().parse(respond);
         JsonObject s2 = s1.getAsJsonObject();
         if (s2.get("status").getAsInt() == 0) {
@@ -38,7 +39,7 @@ public class Account {
             return null;
         }
     }
-    public static void ggg(String str) throws IOException {
+    public static void validate(String str) throws IOException {
         Gson json = new Gson();
         String respond = getRequest("https://api.shisanshui.rtxux.xyz/auth/validate", str);
         System.out.println(respond);
@@ -53,7 +54,7 @@ public class Account {
         user = Login(user);
         System.out.println(json.toJson(user));
         JsonElement s1 = json.toJsonTree(user);
-        ggg(s1.getAsJsonObject().get("token").getAsString());
+       // ggg(s1.getAsJsonObject().get("token").getAsString());
        // ttt(s1.getAsJsonObject().get("token").getAsString(), user);
 
     }

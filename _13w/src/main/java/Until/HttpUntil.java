@@ -36,19 +36,40 @@ public class HttpUntil {
         post.setEntity(entity);
 
         HttpResponse response = httpClient.execute(post);
+        if (response == null){
+            return null;
+        }
         //读取服务器返回过来的json字符串数据
         Integer statusCode = response.getStatusLine().getStatusCode();
-        if(statusCode != HttpStatus.SC_OK) throw new IOException(statusCode.toString());
+     //   if(statusCode != HttpStatus.SC_OK) throw new IOException(statusCode.toString());
         return EntityUtils.toString(response.getEntity());
     }
     public static String postRequest(String url, String json, String token) throws IOException {
-        HttpPost post = new HttpPost(url);
-        HttpClient httpClient = initHttpClient();
-        post.setHeader("X-Auth-Token", token);
-        HttpResponse response = httpClient.execute(post);
-        Integer statusCode = response.getStatusLine().getStatusCode();
-        if(statusCode != HttpStatus.SC_OK) throw new IOException(statusCode.toString());
-        return EntityUtils.toString(response.getEntity());
+        if (json != null){
+            HttpPost post = new HttpPost(url);
+            HttpClient httpClient = initHttpClient();
+
+            post.setHeader("X-Auth-Token", token);
+            post.setHeader("Content-type", "application/json");
+            StringEntity entity = new StringEntity(json, Charset.forName("UTF-8"));
+            entity.setContentEncoding("UTF-8");
+            entity.setContentType("application/json");
+
+            post.setEntity(entity);
+            HttpResponse response = httpClient.execute(post);
+            Integer statusCode = response.getStatusLine().getStatusCode();
+            if(statusCode != HttpStatus.SC_OK) throw new IOException(statusCode.toString());
+            return EntityUtils.toString(response.getEntity());
+        }
+        else{
+            HttpPost post = new HttpPost(url);
+            HttpClient httpClient = initHttpClient();
+            post.setHeader("X-Auth-Token", token);
+            HttpResponse response = httpClient.execute(post);
+            Integer statusCode = response.getStatusLine().getStatusCode();
+            if(statusCode != HttpStatus.SC_OK) throw new IOException(statusCode.toString());
+            return EntityUtils.toString(response.getEntity());
+        }
     }
     public static String getRequest(String url, String token) throws IOException{
         HttpClient httpClient = initHttpClient();
