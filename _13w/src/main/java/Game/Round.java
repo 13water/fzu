@@ -1,5 +1,6 @@
 package Game;
 
+import Rank.Rank_and_History;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -19,7 +20,7 @@ public class Round {
         JsonElement s1 = json.toJsonTree(user);
         String str = s1.getAsJsonObject().get("token").getAsString();
         String respond = postRequest("https://api.shisanshui.rtxux.xyz/game/open", null, str);
-//        System.out.println(respond);
+        System.out.println(respond);
         s1 = new JsonParser().parse(respond);
         JsonObject s2 = s1.getAsJsonObject();
         String s3 = s2.get("data").getAsJsonObject().get("card").getAsString();
@@ -43,24 +44,29 @@ public class Round {
         Account account = new Account();
         Gson json = new Gson();
         user.init("zxcad","zxcda");
-        //      System.out.println(register(user));
-        user.init("zxcad","zxcda");
+//        System.out.println(account.register(user));
+        user.init("kuliangce","txt");
 //        System.out.println(json.toJson(user));
-        user = account.Login(user);
-        System.out.println(json.toJson(user));
-        System.out.println();
-        for (int i = 0; i < 100; i++){
-            Open(user, poker);
-            Hd.init(poker);
-            EX ex = new EX();
-            nj.Nomal_Judge(poker, Hd, 3);
-            nj.Nomal_Judge(poker, Hd, 2);
-            nj.Nomal_Judge(poker, Hd, 1);
-            ex = ex.init(Hd);
-            JsonElement jj = json.toJsonTree(ex);
-//            System.out.println(jj.toString());
-            submit(user, jj.toString());
-        }
+//        user = account.Login(user);
+//        System.out.println(json.toJson(user));
+//        System.out.println();
+//        for (int i = 0; i < 10; i++){
+//            Open(user, poker);
+//            Hd.init(poker);
+//            EX ex = new EX();
+//            nj.Nomal_Judge(poker, Hd, 3);
+//            nj.Nomal_Judge(poker, Hd, 2);
+//            nj.Nomal_Judge(poker, Hd, 1);
+//            ex = ex.init(Hd);
+//            JsonElement jj = json.toJsonTree(ex);
+////            System.out.println(jj.toString());
+//            submit(user, jj.toString());
+//        }
+        Rank_and_History RH = new Rank_and_History();
+//        String[] test = RH.Get_total_Rank();
+//        String test = RH.Get_Detail_History(user, 49926);
+        String s = new String();
+        System.out.println(s.length());
     }
 }
 

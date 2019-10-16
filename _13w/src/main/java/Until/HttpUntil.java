@@ -74,10 +74,10 @@ public class HttpUntil {
     public static String getRequest(String url, String token) throws IOException{
         HttpClient httpClient = initHttpClient();
         HttpGet get = new HttpGet(url);
-        get.setHeader("X-Auth-Token", token);
+        if (token != null)get.setHeader("X-Auth-Token", token);
         HttpResponse response = httpClient.execute(get);
         Integer statusCode = response.getStatusLine().getStatusCode();
-        if(statusCode != HttpStatus.SC_OK) throw new IOException(statusCode.toString());
+     //   if(statusCode != HttpStatus.SC_OK) throw new IOException(statusCode.toString());
         return EntityUtils.toString(response.getEntity());
     }
 }
