@@ -8,7 +8,7 @@ import java.util.Scanner;
     public static boolean[][] card = new boolean[4][14];
     public static int row[] = new int[4];
     public static int col[] = new int[14];
-    public static char suit[] = {'*', '#', '&', '$'};
+    public static char suit[] = {'*', '#', '&', '$'}; // 梅花 方块 红桃 黑桃
     static void begin(char[] s) {
         for (int i = 0; i < s.length; i++) {
             if (s[i] != ' ') {
@@ -39,6 +39,10 @@ import java.util.Scanner;
                     System.out.print(' ');
             }
         }
+        for (int i = 0; i < 4; i++)
+            System.out.println(row[i]);
+        for (int i = 0; i < 14; i++)
+            System.out.println(col[i]);
     }
     static int change(char c) {
         if (c >= '2' && c <= '9')
@@ -59,9 +63,9 @@ import java.util.Scanner;
     static void init(String card_json, int num){
         int len = card_json.length();
         id = num;
+        totp = card_json;
         char[] s = new char[len + 2];
         for (int i = 0; i < len; i++)s[i] = card_json.charAt(i);
-//        System.out.println(s);
         s[len + 1] = s[len] = ' ';
         for (int i = 0; i < 4; i++)row[i] = 0;
         for (int i = 0; i < 14; i++)col[i] = 0;
@@ -71,7 +75,6 @@ import java.util.Scanner;
             }
         }
         begin(s);
-   //     print();
     }
 }
 

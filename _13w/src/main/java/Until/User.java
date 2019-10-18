@@ -16,11 +16,11 @@ public class User {
     public String getToken(){
         return token;
     }
-    public int getID(){
-        return user_id;
-    }
     public void debug(){
         System.out.println(username);
         System.out.println(password);
+    }
+    public int getID(){
+        return user_id;
     }
 }

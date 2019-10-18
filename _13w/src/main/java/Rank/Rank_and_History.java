@@ -15,7 +15,7 @@ public class Rank_and_History {
         String[] ans = new String[100];
         String respond = getRequest("https://api.shisanshui.rtxux.xyz/rank", null);
         JsonArray s = new JsonParser().parse(respond).getAsJsonArray();
-        for (int i = 0; i < 50 && i < s.size(); i++){
+        for (int i = 0; i < 80 && i < s.size(); i++){
             ans[i] = "";
             JsonElement str = s.get(i);
             JsonObject text = str.getAsJsonObject();
@@ -55,6 +55,10 @@ public class Rank_and_History {
             ans += "用户名: " + s2.get("name").getAsString() + "\n";
             ans += "得分: " + s2.get("score").toString() + "\n";
             JsonArray card = new JsonParser().parse(s2.get("card").toString()).getAsJsonArray();
+            if (card.size() == 1){
+                ans += "特殊牌型: " + card.get(0).getAsString() + "\n\n\n";
+                continue;
+            }
             ans += "前墩: " + card.get(0).getAsString() + "\n";
             ans += "中墩: " + card.get(1).getAsString() + "\n";
             ans += "后墩: " + card.get(2).getAsString() + "\n";
@@ -77,11 +81,16 @@ public class Rank_and_History {
             return null;
         }
         for (int i = 0; i < 25 && i < s.size(); i++){
+            System.out.println(i);
             JsonElement str = s.get(i);
             JsonObject text = str.getAsJsonObject();
             ans += "战局ID: " + text.get("id").toString() + "\n";
             ans += "得分: " + text.get("score").toString() + "\n";
             JsonArray card = new JsonParser().parse(text.get("card").toString()).getAsJsonArray();
+            if (card.size() == 1){
+                ans += "特殊牌型: " + card.get(0).getAsString() + "\n\n\n";
+                continue;
+            }
             ans += "前墩: " + card.get(0).getAsString() + "\n";
             ans += "中墩: " + card.get(1).getAsString() + "\n";
             ans += "后墩: " + card.get(2).getAsString() + "\n\n\n";

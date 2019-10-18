@@ -2,7 +2,14 @@ package test;
 
 import java.awt.*;
 import java.awt.event.*;
+import javax.sound.sampled.AudioFileFormat;
 import javax.swing.*;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.io.*;
+import java.applet.Applet;
+import java.applet.AudioClip;
 import javax.swing.border.*;
 
 import com.google.gson.Gson;
@@ -13,6 +20,7 @@ import java.io.IOException;
 import static Until.HttpUntil.*;
 import Until.*;
 import Game.*;
+import Rank.*;
 
 import Auth.Account;
 import Until.User;
@@ -20,10 +28,12 @@ public class Thirteen extends JFrame{
     String rpass = "",rnam = "",snam,spass,lpass,lnam;
     JFrame s = new JFrame("十三氵");
     JFrame ls = new JFrame("主菜单");
+    int id,page;
     Account account = new Account();
     Round round = new Round();
 
     public void sta() throws IOException {
+
         JFrame l = new JFrame("开始");
         Container c = l.getContentPane();
         c.setLayout(null);
@@ -36,28 +46,40 @@ public class Thirteen extends JFrame{
         l.setBounds(400,100,800,600);
         l.setVisible(true);
         l.setResizable(false);
+        l.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JButton sen = new JButton("出牌"),ex = new JButton("返回");
+        JButton sen = new JButton("重开"),ex = new JButton("返回");
         JTextField got = new JTextField();
-        JTextField sha = new JTextField(),zho = new JTextField(),xia = new JTextField();
+        JTextField sha = new JTextField(),zho = new JTextField(),xia = new JTextField(),jtid = new JTextField();
         JLabel g = new JLabel("牌面"),s = new JLabel("上墩"),x = new JLabel("下墩"),z = new JLabel("中墩");
+        JLabel jid = new JLabel("牌局ID");
         sen.setFont(new Font("华文行楷",Font.BOLD,21));
         ex.setFont(new Font("华文行楷",Font.BOLD,21));
         g.setFont(new Font("华文行楷",Font.BOLD,21));
         s.setFont(new Font("华文行楷",Font.BOLD,21));
         x.setFont(new Font("华文行楷",Font.BOLD,21));
         z.setFont(new Font("华文行楷",Font.BOLD,21));
-        got.setBounds(200,100,300,30);
+        jid.setFont(new Font("华文行楷",Font.BOLD,21));
+        got.setFont(new Font("微软雅黑",Font.PLAIN,15));
+        sha.setFont(new Font("微软雅黑",Font.PLAIN,15));
+        zho.setFont(new Font("微软雅黑",Font.PLAIN,15));
+        xia.setFont(new Font("微软雅黑",Font.PLAIN,15));
+        jtid.setFont(new Font("微软雅黑",Font.PLAIN,15));
+        jtid.setBounds(200,340,100,30);
+        jid.setBounds(125,340,100,30);
+        got.setBounds(200,100,330,30);
         g.setBounds(150,100,100,30);
         s.setBounds(150,160,100,30);
-        x.setBounds(150,220,100,30);
-        z.setBounds(150,280,100,30);
+        x.setBounds(150,280,100,30);
+        z.setBounds(150,220,100,30);
         sha.setBounds(200,160,200,30);
         zho.setBounds(200,220,200,30);
         xia.setBounds(200,280,200,30);
         sen.setBounds(460,350,80,40);
         ex.setBounds(550, 350, 80, 40);
         c.add(got,0);
+        c.add(jtid,0);
+        c.add(jid,0);
         c.add(g,0);
         c.add(s,0);
         c.add(x,0);
@@ -65,13 +87,67 @@ public class Thirteen extends JFrame{
         c.add(sha,0);
         c.add(zho,0);
         c.add(xia,0);
-        //c.add(sen,0);
+        c.add(sen,0);
         c.add(ex,0);
         round.Open(round.user,round.poker);
+//        String sc = round.poker.totp;
+//        for (int i = 0; i < sc.length(); i ++){
+//            if (sc.charAt(i) == '*'){
+//                StringBuilder strb = new StringBuilder(sc);
+//                strb.setCharAt(i,'\006');
+//                sc = strb.toString();
+//            }
+//        }
         got.setText(round.poker.totp);
+        hand_card h = new hand_card();
+        EX e = new EX();
+        h.init(round.poker);
+        NJ nj = new NJ();
+        //String sc = nj.Special_Judge(round.poker);//
+
+        nj.Nomal_Judge(round.poker,h,3);
+        nj.Nomal_Judge(round.poker,h,2);
+        nj.Nomal_Judge(round.poker,h,1);
+        e = e.init(h);
+        Gson json = new Gson();
+        JsonElement jj = json.toJsonTree(e);
+        sha.setText(h.getss(0));
+        zho.setText(h.getss(1));
+        xia.setText(h.getss(2));
+        String st = String.valueOf(round.poker.id);
+        jtid.setText(st);
+        //if (sc == null)//
+            round.submit(round.user, jj.toString());
+        //else
+        //round.submit(round.user, sc);
         sen.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-
+                try {
+                    round.Open(round.user,round.poker);
+                } catch (IOException exc) {
+                    exc.printStackTrace();
+                }
+                got.setText(round.poker.totp);
+                hand_card h = new hand_card();
+                EX e = new EX();
+                h.init(round.poker);
+                NJ nj = new NJ();
+                nj.Nomal_Judge(round.poker,h,3);
+                nj.Nomal_Judge(round.poker,h,2);
+                nj.Nomal_Judge(round.poker,h,1);
+                e = e.init(h);
+                Gson json = new Gson();
+                JsonElement jj = json.toJsonTree(e);
+                sha.setText(h.getss(0));
+                zho.setText(h.getss(1));
+                xia.setText(h.getss(2));
+                String st = String.valueOf(round.poker.id);
+                jtid.setText(st);
+                try {
+                    round.submit(round.user, jj.toString());
+                } catch (IOException exc) {
+                    exc.printStackTrace();
+                }
             }
         });
         ex.addActionListener(new ActionListener() {
@@ -81,41 +157,164 @@ public class Thirteen extends JFrame{
             }
         });
     }
-    public void ra() {
+    public void ra() throws IOException {
+        String[] s = Rank_and_History.Get_total_Rank();
         JFrame l = new JFrame("排行榜");
         Container c = l.getContentPane();
-        l.setBounds(410, 110, 780, 580);
+        l.setBounds(410, 110, 830, 580);
         l.setVisible(true);
+        l.setResizable(false);
+
+        BackgroundPanel bg;
+        bg = new BackgroundPanel((new ImageIcon("src/ys8.png")).getImage());
+        bg.setBounds(0,0,830,580);
+        c.add(bg,-1);
 
         JTextArea ar = new JTextArea();
-        ar.setFont(new Font("华文行楷",Font.BOLD,21));
-
+        ar.setFont(new Font("微软雅黑",Font.PLAIN,21));
+        int i = 0;
+//        System.out.println(s[i]);
+        while (s[i]!= null) {
+            //System.out.println(i);
+            ar.append(s[i]);
+            ar.append("\n\n");
+            //System.out.println(s[i]);
+            i ++;
+        }
         JScrollPane js = new JScrollPane(ar);
-        c.add(js);
+        ar.setOpaque(false);
+        js.setOpaque(false);
+        js.getViewport().setOpaque(false);
+        c.add(js,0);
     }
-    public void hl() {
+    public void hlj(){
+        JFrame l = new JFrame("查询历史记录的页数");
+        Container c = l.getContentPane();
+
+        BackgroundPanel bg;
+        bg = new BackgroundPanel((new ImageIcon("src/ys3.png")).getImage());
+        bg.setBounds(0,0,400,300);
+        c.add(bg,-1);
+
+        l.setLayout(null);
+        l.setBounds(460,160,400,300);
+        l.setVisible(true);
+        l.setResizable(false);
+
+        JButton jb = new JButton("查询");
+        jb.setBounds(86,100,80,30);
+        c.add(jb,0);
+        JLabel lb = new JLabel("查找记录的页数");
+        lb.setBounds(0,44,200,15);
+        c.add(lb,0);
+        JTextField jt = new JTextField();
+        jt.setBounds(100,44,220,21);
+        c.add(jt,0);
+        lb.setFont(new Font("华文行楷",Font.PLAIN,17));
+        jb.setFont(new Font("华文行楷",Font.PLAIN,17));
+
+        jb.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                String s = jt.getText();
+                page = Integer.valueOf(s).intValue();
+                try {
+                    hl();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //               l.dispose();
+            }
+        });
+    }
+    public void hl() throws IOException {
+        String s = Rank_and_History.Get_Personal_History(round.user,page-1);
         JFrame l = new JFrame("历史战局列表");
         Container c = l.getContentPane();
-        l.setBounds(410, 110, 780, 580);
+        l.setBounds(410, 110, 830, 580);
         l.setVisible(true);
+        l.setResizable(false);
+
+        BackgroundPanel bg;
+        bg = new BackgroundPanel((new ImageIcon("src/ys8.png")).getImage());
+        bg.setBounds(0,0,830,580);
+        c.add(bg,-1);
 
         JTextArea ar = new JTextArea();
-        ar.setFont(new Font("华文行楷",Font.BOLD,21));
+        ar.setFont(new Font("微软雅黑",Font.PLAIN,21));
+        if (s != null)
+            ar.setText(s);
+        else
+            ar.setText("这页没有历史记录咯，请在前页找一下");
 
         JScrollPane js = new JScrollPane(ar);
-        c.add(js);
+        ar.setOpaque(false);
+        js.setOpaque(false);
+        js.getViewport().setOpaque(false);
+        c.add(js,0);
     }
-    public void hx() {
+    public void hxj(){
+        JFrame l = new JFrame("战局查询");
+        Container c = l.getContentPane();
+
+        BackgroundPanel bg;
+        bg = new BackgroundPanel((new ImageIcon("src/ys3.png")).getImage());
+        bg.setBounds(0,0,400,300);
+        c.add(bg,-1);
+
+        l.setLayout(null);
+        l.setBounds(460,160,400,300);
+        l.setVisible(true);
+        l.setResizable(false);
+
+        JButton jb = new JButton("查询");
+        jb.setBounds(86,100,80,30);
+        c.add(jb,0);
+        JLabel lb = new JLabel("查找战局ID");
+        lb.setBounds(0,44,100,15);
+        c.add(lb,0);
+        JTextField jt = new JTextField();
+        jt.setBounds(86,44,220,21);
+        c.add(jt,0);
+        lb.setFont(new Font("华文行楷",Font.PLAIN,17));
+        jb.setFont(new Font("华文行楷",Font.PLAIN,17));
+
+        jb.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                String s = jt.getText();
+                id = Integer.valueOf(s).intValue();
+                try {
+                    hx();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //               l.dispose();
+            }
+        });
+    }
+    public void hx() throws IOException {
+        String s = Rank_and_History.Get_Detail_History(round.user,id);
         JFrame l = new JFrame("历史战局详情");
         Container c = l.getContentPane();
-        l.setBounds(410, 110, 780, 580);
+        l.setBounds(410, 110, 830, 580);
         l.setVisible(true);
+        l.setResizable(false);
+
+        BackgroundPanel bg;
+        bg = new BackgroundPanel((new ImageIcon("src/ys8.png")).getImage());
+        bg.setBounds(0,0,830,580);
+        c.add(bg,-1);
 
         JTextArea ar = new JTextArea();
-        ar.setFont(new Font("华文行楷",Font.BOLD,20));
-
+        ar.setFont(new Font("微软雅黑",Font.PLAIN,20));
+        if (s != null)
+            ar.setText(s);
+        else
+            ar.setText("未找到该历史战局");
         JScrollPane js = new JScrollPane(ar);
-        c.add(js);
+        ar.setOpaque(false);
+        js.setOpaque(false);
+        js.getViewport().setOpaque(false);
+        c.add(js,0);
     }
     public void hi() {
         JFrame l = new JFrame("历史记录");
@@ -130,6 +329,7 @@ public class Thirteen extends JFrame{
         l.setBounds(400,100,800,600);
         l.setVisible(true);
         l.setResizable(false);
+        l.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JButton ran = new JButton("排行榜"),hl = new JButton("历史战局列表"),hx = new JButton("历史战局详情"),ex = new JButton("返回");
         ran.setFont(new Font("华文行楷",Font.BOLD,21));
@@ -147,17 +347,22 @@ public class Thirteen extends JFrame{
         c.add(ex,0);
         ran.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                ra();
+                try {
+                    ra();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         hl.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                hl();
+                hlj();
             }
         });
         hx.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                hx();
+
+                    hxj();
             }
         });
         ex.addActionListener(new ActionListener() {
@@ -175,6 +380,7 @@ public class Thirteen extends JFrame{
         Container c = ls.getContentPane();
         c.setLayout(null);
         ls.setResizable(false);
+        ls.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         BackgroundPanel bg;
         bg = new BackgroundPanel((new ImageIcon("src/ys2.png")).getImage());
@@ -478,6 +684,11 @@ public class Thirteen extends JFrame{
     public Thirteen() {
         //s.setUndecorated(true);
 //		s.setBounds(0,0,400,300);
+//        AudioClip aau;
+//        aau = Applet.newAudioClip(url);
+//        aau.loop();
+        //play();
+
         Container sc = s.getContentPane();
         sc.setLayout(null);
         s.setResizable(false);
@@ -567,7 +778,26 @@ public class Thirteen extends JFrame{
 
         }
     }
+/*    public static void play(){
+        try{
+            URL cb;
+            File f = new File("C:\\Users\\14220\\Desktop\\新建文件夹\\_13w\\src\\china.wav"); // 引号里面的是音乐文件所在的路径
+            cb = f.toURL();
+            AudioClip aau;
+            aau = Applet.newAudioClip(cb);
+
+            aau.play();
+            aau.loop();//循环播放
+            System.out.println("可以播放");
+            // 循环播放 aau.play()
+            //单曲 aau.stop()停止播放
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }*/
     public static void main(String[] args) {
         new Thirteen();
+
     }
 }

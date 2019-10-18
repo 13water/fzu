@@ -1,6 +1,6 @@
 package Game;
 
-public class NJ {
+public class NJ{
     static int cnt = 0;
     static int[] t = new int[10];
     public static char suit[] = {'*', '#', '&', '$'};
@@ -88,9 +88,9 @@ public class NJ {
         }
         for (int i = 13; i >= 1; i--){
             if (poker.card[L][i])
-                x = i;
+                x = L;
             else if (poker.card[R][i])
-                x = i;
+                x = R;
             if (x != 0)
                 break;
         }
@@ -228,67 +228,191 @@ public class NJ {
         }
         return true;
     }
-    static void Nomal_Judge(Poker poker, hand_card ex, int x){
+    public static void Nomal_Judge(Poker poker, hand_card ex, int x){
         if (x == 1)cnt = 3;
         else cnt = 5;
         if (x != 1){
             if (flush(poker)){
                 analyse(ex, x);
-//                System.out.println(1);
+                System.out.println(1);
                 clr(poker);
                 return;
             }
             if (boom(poker)){
                 analyse(ex, x);
-//                System.out.println(2);
+                System.out.println(2);
                 clr(poker);
                 return;
             }
             if (cucurbit(poker)){
                 analyse(ex, x);
-//                System.out.println(3);
+                System.out.println(3);
                 clr(poker);
                 return;
             }
             if (same_suit(poker)){
                 analyse(ex, x);
-//                System.out.println(4);
+                System.out.println(4);
                 clr(poker);
                 return;
             }
             if (straight(poker)){
                 analyse(ex, x);
-//                System.out.println(5);
+                System.out.println(5);
                 clr(poker);
                 return;
             }
         }
         if (three(poker)){
             analyse(ex, x);
-//            System.out.println(6);
+            System.out.println(6);
             clr(poker);
             return;
         }
         if (x != 1){
             if (two_pair(poker)){
                 analyse(ex, x);
-//                System.out.println(7);
+                System.out.println(7);
                 clr(poker);
                 return;
             }
         }
         if (pair(poker)){
             analyse(ex, x);
-//            System.out.println(8);
+            System.out.println(8);
             clr(poker);
             return;
         }
         if (zapai(poker)){
             analyse(ex, x);
-//            System.out.println(9);
+            System.out.println(9);
             clr(poker);
             return;
         }
+    }
+    public static String Special_Judge(Poker poker){
+        int flag = 0;
+        String ans;
+        int[] num = new int[5];
+        for (int i = 0; i < 5; i++)num[i] = 0;
+        int big = 0, small = 0;
+        for (int i = 1; i <= 13; i++){
+            num[poker.col[i]]++;
+            if (i <= 7)
+                small += poker.col[i];
+            else
+                big += poker.col[i];
+        }
+        if (num[1] == 13)   flag = 1;
+        if (poker.col[10] + poker.col[11] + poker.col[12] + poker.col[13] >= 12)    flag = 2;
+        if (small == 13 || big == 13)   flag = 3;
+        if (num[4] == 3)    flag = 4;
+        if (poker.row[0] + poker.row[1] == 13 || poker.row[2] + poker.row[3] == 13) flag = 5;
+//        if (num[3] == 2 && ((num[2] == 3 || (num[4] == 1 && num[1] != 3))))
+        int x = num[2], y = num[3], z = num[4];
+        if (y == 3){
+            y--;
+            x++;
+        }
+        else if (y == 1 && z > 0){
+            y++;
+            z--;
+        }
+        if (z * 2 >= 3 - x && y == 2 && x <= 3) flag = 6;
+        if (num[3] + num[4] == 4)   flag = 7;
+        if (num[3] == 1 && num[2] + num[4] * 2 == 5)    flag = 8;
+        if (num[3] + num[2] + num[4] * 2 == 6)  flag = 9;
+        int[] a = new int[4];
+        for (int i = 0; i < 4; i++){
+            if (poker.row[i] == 3)
+                a[0]++;
+            else if (poker.row[i] == 5)
+                a[1]++;
+            else if (poker.row[i] == 8)
+                a[2]++;
+            else if (poker.row[i] == 10)
+                a[3]++;
+        }
+        if (a[0] == 1 && (a[1] == 2 || a[3] == 1))
+            flag = 10;
+        else if (a[1] == 1 && a[2] == 1)
+            flag = 11;
+        a = new int[15];
+        for (int i = 0; i <= 13; i++){
+            a[i] = poker.col[i];
+        }
+        int cnt = 0;
+        boolean ff = true;
+        for (int i = 1; i <= 13; i++){
+            System.out.print(i);
+            System.out.print(" ");
+            System.out.println(a[i]);
+            while(a[i] > 0){
+                int lim;
+                if (cnt++ == 0)lim = 3;
+                else lim = 5;
+                for (int j = 0; j < lim; j++){
+                    if (i + j > 13){
+                        ff = false;
+                        break;
+                    }
+                    a[i+j]--;
+                }
+            }
+            if (a[i] < 0)ff = false;
+        }
+        if (ff && cnt == 3)flag = 12;
+        for (int i = 0; i <= 13; i++){
+            a[i] = poker.col[i];
+        }
+        ff = true;
+        cnt = 0;
+        for (int i = 1; i <= 13; i++){
+//            System.out.print(i);
+//            System.out.print(" ");
+//            System.out.println(a[i]);
+            while(a[i] > 0){
+                int lim;
+                if (cnt++ == 1)lim = 3;
+                else lim = 5;
+                for (int j = 0; j < lim; j++){
+                    if (i + j > 13){
+                        ff = false;
+                        break;
+                    }
+                    a[i+j]--;
+                }
+            }
+            if (a[i] < 0)ff = false;
+        }
+        if (ff && cnt == 3)flag = 13;
+        ff = true;
+        for (int i = 0; i <= 13; i++){
+            a[i] = poker.col[i];
+        }
+        cnt = 0;
+        for (int i = 1; i <= 13; i++){
+            while(a[i] > 0){
+                int lim;
+                if (cnt++ == 2)lim = 3;
+                else lim = 5;
+                for (int j = 0; j < lim; j++){
+                    if (i + j > 13){
+                        ff = false;
+                        break;
+                    }
+                    a[i+j]--;
+                }
+            }
+            if (a[i] < 0)ff = false;
+        }
+        if (ff && cnt == 3)flag = 14;
+        if (flag > 0){
+            System.out.println(flag);
+            ans = "{\"id\":" + String.valueOf(poker.id) + ",\"card\":[\"" + poker.totp + "\"]}";
+            return ans;
+        }
+        return null;
     }
     static void analyse(hand_card ex, int x){
         int s, num;
@@ -305,7 +429,12 @@ public class NJ {
             c = change(num);
             test = test + c;
             ex.pushString(c, x);
+//            System.out.println(test);
         }
+//        for (int i = 0; i < cnt; i++){
+//            System.out.println(t[i]);
+//        }
+
     }
     static void clr(Poker poker){
         int s, num;

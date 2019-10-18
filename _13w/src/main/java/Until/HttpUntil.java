@@ -16,8 +16,8 @@ public class HttpUntil {
     public static HttpClient initHttpClient(){
         HttpClient httpClient = new DefaultHttpClient();
         // 设置超时时间
-        httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 6000);
-        httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 6000);
+        httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 10000);
+        httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 10000);
         return httpClient;
     }
 
@@ -74,10 +74,10 @@ public class HttpUntil {
     public static String getRequest(String url, String token) throws IOException{
         HttpClient httpClient = initHttpClient();
         HttpGet get = new HttpGet(url);
-        if (token != null)get.setHeader("X-Auth-Token", token);
+        get.setHeader("X-Auth-Token", token);
         HttpResponse response = httpClient.execute(get);
         Integer statusCode = response.getStatusLine().getStatusCode();
-     //   if(statusCode != HttpStatus.SC_OK) throw new IOException(statusCode.toString());
+//        if(statusCode != HttpStatus.SC_OK) throw new IOException(statusCode.toString());
         return EntityUtils.toString(response.getEntity());
     }
 }

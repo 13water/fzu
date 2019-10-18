@@ -1,6 +1,6 @@
 package Game;
 
-public class EX {
+public class EX{
     private int id = 0;
     private String[] card = new String[3];
     public EX init(hand_card Hd){

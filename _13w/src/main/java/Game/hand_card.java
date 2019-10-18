@@ -6,14 +6,14 @@ public class hand_card {
     static void pushString(String s, int t){
         card[t - 1] += s;
     }
-    static void init(Poker poker){
+    public static void init(Poker poker){
         id = poker.id;
         card[0] = "";
         card[1] = "";
         card[2] = "";
     }
-    static String getss(){
-        return card[0];
+    public static String getss(int x){
+        return card[x];
     }
 }
 
