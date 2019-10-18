@@ -1,0 +1,12 @@
+os: windows
+sudo: false
+language: java
+
+script:
+  - nosetests tests
+branches:
+  only:
+    - master
+
+notifications:
+  email: false
