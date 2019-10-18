@@ -16,4 +16,4 @@ win10下运行，需要java的jdk版本为12
 # commit信息
 
 # 持续集成
-[![](https://img.shields.io/badge/bulid-passing-green.svg)](https://app.codacy.com/manual/kbkingbob/fzu/dashboard)
+[![](https://img.shields.io/badge/bulid-passing-green.svg)](https://travis-ci.org/organizations/13water/repositories)
