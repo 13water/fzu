@@ -2,7 +2,7 @@
 [![](https://img.shields.io/badge/yo-hey-red.svg)](https://edu.cnblogs.com/campus/fzu/SE_FZU_1917_K)
 
 # 代码质量徽章
-[![](https://img.shields.io/badge/code_quality-A-red.svg)](https://app.codacy.com/manual/kbkingbob/fzu/dashboard)
+[![](https://img.shields.io/badge/code_quality-A-green.svg)](https://app.codacy.com/manual/kbkingbob/fzu/dashboard)
 
 # 运行环境
 win10下运行，需要java的jdk版本为12
