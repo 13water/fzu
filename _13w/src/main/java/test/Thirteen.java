@@ -90,15 +90,18 @@ public class Thirteen extends JFrame{
         c.add(sen,0);
         c.add(ex,0);
         round.Open(round.user,round.poker);
-//        String sc = round.poker.totp;
+
+        String sc = round.poker.totp;
 //        for (int i = 0; i < sc.length(); i ++){
 //            if (sc.charAt(i) == '*'){
 //                StringBuilder strb = new StringBuilder(sc);
-//                strb.setCharAt(i,'\006');
+//                strb.setCharAt(i,'♣');
 //                sc = strb.toString();
 //            }
 //        }
-        got.setText(round.poker.totp);
+//        System.out.print(sc);
+   //     got.append()
+         got.setText(round.poker.totp);
         hand_card h = new hand_card();
         EX e = new EX();
         h.init(round.poker);
@@ -239,10 +242,20 @@ public class Thirteen extends JFrame{
         bg.setBounds(0,0,830,580);
         c.add(bg,-1);
 
+//        for (int i = 0; i < s.length(); i ++){
+//            if (s.charAt(i) == '*'){
+//                StringBuilder strb = new StringBuilder(s);
+//                strb.setCharAt(i,'♣');
+//                s = strb.toString();
+//            }
+//        }
+//        System.out.print(s);
+
         JTextArea ar = new JTextArea();
         ar.setFont(new Font("微软雅黑",Font.PLAIN,21));
         if (s != null)
-            ar.setText(s);
+            ar.append(s);
+            //ar.setText(s);
         else
             ar.setText("这页没有历史记录咯，请在前页找一下");
 

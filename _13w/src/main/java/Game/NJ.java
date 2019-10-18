@@ -79,22 +79,34 @@ public class NJ{
         }
     }
     static boolean same_suit(Poker poker){
-        int L = 0, R = 0, x = 0;
+        int L = 6, R = 6, x = 6;
         for (int i = 0; i < 4; i++){
-            if (poker.row[i] >= 5 && L == 0)
+            if (poker.row[i] >= 5 && L == 6)
                 L = i;
-            else if (poker.row[i] >= 5 && L != 0)
+            else if (poker.row[i] >= 5 && L != 6)
                 R = i;
         }
         for (int i = 13; i >= 1; i--){
-            if (poker.card[L][i])
+            if (poker.card[L][i] && L != 6)
                 x = L;
-            else if (poker.card[R][i])
+            else if (poker.card[R][i] && R != 6)
                 x = R;
-            if (x != 0)
+            if (x != 6)
                 break;
         }
-        for (int i = x; i < 4; i++){
+        if (R != 6 && L != 6){
+            for (int i = 13; i >= 1; i--){
+                if (poker.card[L][i] == true && poker.card[R][i] == false){
+                    x = L;
+                    break;
+                }
+                else if (poker.card[L][i] == false && poker.card[R][i] == true){
+                    x = R;
+                    break;
+                }
+            }
+        }
+        for (int i = x; i < 4 && x != 6; i++){
             if (poker.row[i] >= 5){
                 int co = 0;
                 for (int j = 13; j >= 1; j--){
@@ -344,9 +356,9 @@ public class NJ{
         int cnt = 0;
         boolean ff = true;
         for (int i = 1; i <= 13; i++){
-            System.out.print(i);
-            System.out.print(" ");
-            System.out.println(a[i]);
+//            System.out.print(i);
+//            System.out.print(" ");
+//            System.out.println(a[i]);
             while(a[i] > 0){
                 int lim;
                 if (cnt++ == 0)lim = 3;

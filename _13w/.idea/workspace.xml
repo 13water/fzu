@@ -42,7 +42,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JAR Application.13w.jar">
+  <component name="RunManager" selected="Application.Round">
     <configuration name="Round" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Game.Round" />
       <module name="13w" />
@@ -75,9 +75,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Round" />
         <item itemvalue="JAR Application.13w.jar" />
         <item itemvalue="Application.Thirteen" />
-        <item itemvalue="Application.Round" />
       </list>
     </recent_temporary>
   </component>

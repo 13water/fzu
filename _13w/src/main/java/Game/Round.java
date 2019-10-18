@@ -38,19 +38,21 @@ public class Round {
         s1 = new JsonParser().parse(respond);
         JsonObject s2 = s1.getAsJsonObject();
         String s3 = s2.get("data").toString();
-        System.out.println(s3);
+//        System.out.println(s3);
     }
     public static void main(String args[]) throws IOException {
         Account account = new Account();
         Gson json = new Gson();
         Scanner sc = new Scanner(System.in);
-        user.init("kuliangce","txt");
+//        user.init("kuliangce","txt");
+        user.init("kingbob","123456");
         user = account.Login(user);
-        for (int i = 0; i < 30; i++){
+        for (int i = 0; i < 10; i++){
+            System.out.println("lun: " + String.valueOf(i));
             Open(user, poker);
 //            String s1 = sc.nextLine();
 //            System.out.println(s1);
-//            poker.init(s1, i);
+//            poker.init("$Q $J *4 *7 $9 $3 #5 $6 *9 *Q #K &3 *2", i);
             Hd.init(poker);
             String ss = nj.Special_Judge(poker);
             nj.Nomal_Judge(poker, Hd, 3);
@@ -68,5 +70,6 @@ public class Round {
                 submit(user, jj.toString());
         }
     }
+
 }
 

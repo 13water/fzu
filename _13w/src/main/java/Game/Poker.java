@@ -5,8 +5,8 @@ import java.util.Scanner;
  public class Poker {
      public static int id = 0;
      public static String totp = new String();
-    public static boolean[][] card = new boolean[4][14];
-    public static int row[] = new int[4];
+    public static boolean[][] card = new boolean[10][14];
+    public static int row[] = new int[10];
     public static int col[] = new int[14];
     public static char suit[] = {'*', '#', '&', '$'}; // 梅花 方块 红桃 黑桃
     static void begin(char[] s) {
