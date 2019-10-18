@@ -1,12 +1,18 @@
-os: windows
-sudo: false
 language: java
 
-script:
-  - nosetests tests
+
+jdk:
+  - openjdk12
+script: "mvn clean package -DskipTests=true -Dcheckstyle.skip=true"
+
 branches:
   only:
-    - master
+    - develop
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
 
 notifications:
-  email: false
+  email:
+    - 1422012650@qq.com
